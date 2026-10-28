@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT 107 - Checkpoint 1 Documentation: Secure Clinic Appointment and Monitoring System</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --primary-dark: #154360;
+            --secondary: #2c3e50;
+            --accent: #27ae60;
+            --bg-light: #f8f9fa;
+            --border: #dcdcdc;
+            --text: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: var(--text);
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .header-banner {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .header-banner h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin: 0 0 6px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-banner h2 {
+            font-size: 16px;
+            color: var(--secondary);
+            font-weight: 600;
+            margin: 0 0 4px 0;
+        }
+
+        .header-banner p {
+            margin: 0;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 18px;
+            border-bottom: 2px solid #eef2f7;
+            padding-bottom: 8px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .badge {
+            background-color: var(--primary);
+            color: white;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: normal;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #ebf5fb;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fbfcfc;
+        }
+
+        .code-box {
+            background-color: #f4f6f7;
+            border: 1px solid #e5e8e8;
+            padding: 12px 16px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 13px;
+            border-radius: 4px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+
+        .note-box {
+            background-color: #eaf2f8;
+            border-left: 4px solid var(--primary);
+            padding: 12px 16px;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        .success-box {
+            background-color: #e8f8f5;
+            border-left: 4px solid var(--accent);
+            padding: 12px 16px;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        .field-table td:nth-child(1) { font-weight: 600; }
+        .field-table td:nth-child(2) { color: #555; }
+        .field-table td:nth-child(5) { font-family: Consolas, monospace; font-size: 12px; color: #c0392b; }
+
+        .approval-table {
+            margin-top: 24px;
+            width: 100%;
+        }
+
+        .approval-table td {
+            height: 40px;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 0; max-width: 100%; }
+            .page-break { page-break-before: always; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-banner">
+        <h1>Caraga State University</h1>
+        <h2>College of Computing and Information Sciences</h2>
+        <p>IT 107 – Information Assurance and Security 1 &middot; Final Laboratory Project &middot; 1st Sem A.Y. 2026–2027</p>
+    </div>
+
+    <div style="background-color: #fdfefe; border: 1px solid #d6dbdf; padding: 12px 16px; border-radius: 6px; margin-bottom: 24px;">
+        <table style="margin: 0; border: none; font-size: 13px;">
+            <tr style="background: none;"><td style="border: none; padding: 4px 0; width: 140px;"><strong>Student Name:</strong></td><td style="border: none; padding: 4px 0;">Reniel Bantilan</td></tr>
+            <tr style="background: none;"><td style="border: none; padding: 4px 0;"><strong>Verified Email:</strong></td><td style="border: none; padding: 4px 0;">efren.castillano@csucc.edu.ph</td></tr>
+            <tr style="background: none;"><td style="border: none; padding: 4px 0;"><strong>Assigned Seed:</strong></td><td style="border: none; padding: 4px 0;"><strong>D1 = 9</strong> &nbsp;|&nbsp; <strong>D2 = 1</strong></td></tr>
+            <tr style="background: none;"><td style="border: none; padding: 4px 0;"><strong>Project Title:</strong></td><td style="border: none; padding: 4px 0;"><strong>Secure Clinic Appointment and Monitoring System</strong></td></tr>
+            <tr style="background: none;"><td style="border: none; padding: 4px 0;"><strong>Checkpoint:</strong></td><td style="border: none; padding: 4px 0;">Checkpoint 1 (Deliverables A, B, C, D, E) &middot; Due October 30, 2026</td></tr>
+        </table>
+    </div>
+
+    <!-- DELIVERABLE A -->
+    <div class="section-title">
+        <span>Appendix A: System Proposal</span>
+        <span class="badge">Deliverable A</span>
+    </div>
+
+    <table>
+        <tr>
+            <th style="width: 28%;">Proposal Item</th>
+            <th>Specification & Details</th>
+        </tr>
+        <tr>
+            <td><strong>System Name</strong></td>
+            <td><strong>Secure Clinic Appointment and Monitoring System</strong></td>
+        </tr>
+        <tr>
+            <td><strong>Who Uses It</strong></td>
+            <td>
+                <strong>Patients:</strong> Register securely, verify email via 6-digit OTP, log in using two-step authentication, request clinic appointments, view only their own appointment history/status, use self-service password reset, and log out securely.<br><br>
+                <strong>Clinic Administrator:</strong> Authenticates through a protected login flow with OTP, reviews and manages clinic appointment requests, updates appointment statuses, and accesses the protected security monitoring dashboard to inspect real-time security events, lockout status, IP blocking, and automated monitoring flags.
+            </td>
+        </tr>
+        <tr>
+            <td><strong>What It Stores</strong></td>
+            <td>
+                1. <strong>Patient Account & Identity:</strong> ID Number (format <code>xxxx-xxxx</code>, primary key), Full Name (First, Middle, Family, Extension), Birthdate, Age, Address (Purok/Street, Barangay, City, Province, Country, ZIP), Email Address, and Username.<br>
+                2. <strong>Security Credentials:</strong> Password hashes (<code>password_hash</code> with BCRYPT/Argon2id), hashed authentication answers, hashed OTP codes (purpose, expiry, attempt counter), and password history (hashes of last 3 passwords).<br>
+                3. <strong>Appointment Information:</strong> Appointment date/time, department, patient type, reason, status, and AES-256 encrypted contact number.<br>
+                4. <strong>Security Logs:</strong> Append-only activity logs (event type, username typed, user ID, IP address, user-agent, details, timestamp), failed logins, lockout records, IP blocks, and security flags.
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Why Accounts Need Protecting</strong></td>
+            <td>
+                The system stores personal information and clinic consultation records governed by the <strong>Philippine Data Privacy Act of 2012 (Republic Act No. 10173)</strong>. Protecting accounts prevents unauthorized disclosure of health appointments, identity theft, unauthorized cancellation or tampering with medical consultations, credential stuffing attacks, and administrative dashboard takeover.
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Sensitive Field to Encrypt (Protection 13)</strong></td>
+            <td>
+                <strong>Patient Contact Number</strong>. Encrypted at rest in MySQL using <strong>AES-256</strong> (via PHP OpenSSL <code>openssl_encrypt()</code> with a securely generated random IV). Decrypted strictly to display to its legitimate owner. The AES key is stored outside Git in <code>config.php</code>. Passwords, answers, and OTPs are one-way hashed.
+            </td>
+        </tr>
+    </table>
+
+    <h3 style="font-size: 15px; color: var(--secondary); margin-top: 20px; margin-bottom: 10px;">Clinic-Specific Registration Fields</h3>
+    <table class="field-table">
+        <tr>
+            <th>Field Name</th>
+            <th>Type</th>
+            <th>Required?</th>
+            <th>Validation Rule</th>
+            <th>Exact Error Message</th>
+        </tr>
+        <tr>
+            <td>Contact Number</td>
+            <td>Formatted text / Phone</td>
+            <td>Required</td>
+            <td>Philippine mobile format: exactly 11 digits starting with <code>09</code> (<code>09XXXXXXXXX</code>). Encrypted at rest (Protection 13).</td>
+            <td>Enter a valid contact number in the format 09XXXXXXXXX.</td>
+        </tr>
+        <tr>
+            <td>Patient Type</td>
+            <td>Dropdown / Select</td>
+            <td>Required</td>
+            <td>Options: <code>New Patient</code>, <code>Returning Patient</code>. Server rejects unlisted options.</td>
+            <td>Select a valid patient type.</td>
+        </tr>
+        <tr>
+            <td>Preferred Clinic Department</td>
+            <td>Dropdown / Select</td>
+            <td>Required</td>
+            <td>Must match configured clinic departments (General Medicine, Pediatrics, Dental, Dermatology, Cardiology).</td>
+            <td>Select a valid clinic department.</td>
+        </tr>
+        <tr>
+            <td>Emergency Contact Number</td>
+            <td>Formatted text / Phone</td>
+            <td>Optional</td>
+            <td>If provided, must follow format <code>09XXXXXXXXX</code> (11 digits).</td>
+            <td>Enter a valid emergency contact number in the format 09XXXXXXXXX.</td>
+        </tr>
+    </table>
+
+    <table class="approval-table">
+        <tr>
+            <th colspan="2" style="background-color: #f2f4f4; color: #333;">Instructor Approval (To be completed by Instructor at Checkpoint 1)</th>
+        </tr>
+        <tr>
+            <td style="width: 50%;"><strong>Instructor Decision:</strong> &nbsp;&nbsp; ☐ Approved &nbsp;&nbsp;&nbsp;&nbsp; ☐ Revise and resubmit</td>
+            <td style="width: 50%;"><strong>Date:</strong> _________________________________</td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Instructor Signature:</strong> __________________________________________________________________________</td>
+        </tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- DELIVERABLE B -->
+    <div class="section-title">
+        <span>Personal Seed Table (D1 = 9, D2 = 1)</span>
+        <span class="badge">Deliverable B</span>
+    </div>
+
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Parameter</th>
+            <th>Handout Formula</th>
+            <th>Calculation (D1=9, D2=1)</th>
+            <th>System Value</th>
+            <th>Handout Ref</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Min username length</td>
+            <td>6 + (D1 mod 3)</td>
+            <td>6 + (9 mod 3) = 6 + 0</td>
+            <td><strong>6 characters</strong></td>
+            <td>Sec. 4.9</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Max username length</td>
+            <td>16 + (D2 mod 5)</td>
+            <td>16 + (1 mod 5) = 16 + 1</td>
+            <td><strong>17 characters</strong></td>
+            <td>Sec. 4.9</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Min password length</td>
+            <td>8 + (D2 mod 4)</td>
+            <td>8 + (1 mod 4) = 8 + 1</td>
+            <td><strong>9 characters</strong></td>
+            <td>Sec. 4.9</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Max length of each name field</td>
+            <td>20 + D2</td>
+            <td>20 + 1</td>
+            <td><strong>21 characters</strong></td>
+            <td>Sec. 4.5</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Failed log-ins before "Forgot Password?"</td>
+            <td>2 + (D1 mod 2)</td>
+            <td>2 + (9 mod 2) = 2 + 1</td>
+            <td><strong>3 failures</strong></td>
+            <td>Sec. 8.2</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Lockout Tier 1 duration</td>
+            <td>15 + D1 seconds</td>
+            <td>15 + 9</td>
+            <td><strong>24 seconds</strong></td>
+            <td>Sec. 8.3</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Lockout Tier 2 duration</td>
+            <td>30 + (2 &times; D1) seconds</td>
+            <td>30 + (2 &times; 9) = 30 + 18</td>
+            <td><strong>48 seconds</strong></td>
+            <td>Sec. 8.3</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>Lockout Tier 3 duration</td>
+            <td>60 + (4 &times; D1) seconds</td>
+            <td>60 + (4 &times; 9) = 60 + 36</td>
+            <td><strong>96 seconds</strong></td>
+            <td>Sec. 8.3</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>OTP expiry window</td>
+            <td>3 + (D2 mod 3) minutes</td>
+            <td>3 + (1 mod 3) = 3 + 1</td>
+            <td><strong>4 minutes</strong></td>
+            <td>Sec. 6.2</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>Idle session timeout</td>
+            <td>5 + (D1 mod 5) minutes</td>
+            <td>5 + (9 mod 5) = 5 + 4</td>
+            <td><strong>9 minutes</strong></td>
+            <td>Sec. 8.4</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>IP block threshold</td>
+            <td>8 + D2 failures</td>
+            <td>8 + 1</td>
+            <td><strong>9 failures / 10 min</strong></td>
+            <td>Sec. 12 (P5)</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>Authentication Question A</td>
+            <td>Q[(D2 mod 8) + 1]</td>
+            <td>Q[(1 mod 8) + 1] = Q2</td>
+            <td><strong>Q2: "Who was your best friend in elementary school?"</strong></td>
+            <td>Sec. 5</td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>Authentication Question B</td>
+            <td>Q[((D2 + 3) mod 8) + 1]</td>
+            <td>Q[((1 + 3) mod 8) + 1] = Q5</td>
+            <td><strong>Q5: "What street did you live on in Grade 1?"</strong></td>
+            <td>Sec. 5</td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td>Authentication Question C</td>
+            <td>Q[((D2 + 5) mod 8) + 1]</td>
+            <td>Q[((1 + 5) mod 8) + 1] = Q7</td>
+            <td><strong>Q7: "What was the name of your elementary school?"</strong></td>
+            <td>Sec. 5</td>
+        </tr>
+    </table>
+
+    <!-- DELIVERABLE C, D, E -->
+    <div class="section-title">
+        <span>Technical Deliverables Evidence</span>
+        <span class="badge">Deliverables C, D, E</span>
+    </div>
+
+    <table>
+        <tr>
+            <th>Deliverable</th>
+            <th>Implementation Evidence</th>
+            <th>Verification Status</th>
+        </tr>
+        <tr>
+            <td><strong>Deliverable C: Git Repository</strong></td>
+            <td>
+                Repository initialized on branch <code>master</code>.<br>
+                Structured commits established for each phase:
+                <ul>
+                    <li><code>c968b63</code> - Initialize project with .gitignore and config.sample.php (Protection 11)</li>
+                    <li><code>6334083</code> - Add System Proposal (Appendix A) and Seed Table (Section 2.2, D1=9, D2=1)</li>
+                    <li><code>5b895d6</code> - Add PHPMailer dependency and test_email.php script for Checkpoint 1 verification</li>
+                </ul>
+            </td>
+            <td><strong style="color: var(--accent);">&check; Initialized & Verified</strong></td>
+        </tr>
+        <tr>
+            <td><strong>Deliverable D: .gitignore</strong></td>
+            <td>
+                Strict exclusion configured in <code>.gitignore</code>:<br>
+                <code>config.php</code>, <code>vendor/</code>, <code>logs/</code>, <code>*.log</code>, <code>.env</code>, keys.<br>
+                Audited using <code>git status --ignored</code> and <code>git log -S</code>. Zero secrets committed.
+            </td>
+            <td><strong style="color: var(--accent);">&check; Active & Isolated</strong></td>
+        </tr>
+        <tr>
+            <td><strong>Deliverable E: One Real Test Email</strong></td>
+            <td>
+                Dispatched using <strong>PHPMailer 6.12</strong> via Google SMTP (TLS port 587) from <code>efren.castillano@csucc.edu.ph</code> to itself.<br>
+                HTML verification email successfully received and verified in inbox.
+            </td>
+            <td><strong style="color: var(--accent);">&check; Delivered & Verified</strong></td>
+        </tr>
+    </table>
+
+    <div class="success-box">
+        <strong>Checkpoint 1 Status:</strong> All deliverables (A, B, C, D, E) are completely satisfied, tested against seed values $D_1=9, D_2=1$, and ready for instructor evaluation.
+    </div>
+</div>
+
+</body>
+</html>
