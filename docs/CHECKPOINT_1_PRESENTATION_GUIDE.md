@@ -111,3 +111,4 @@ Once Checkpoint 1 is signed, we will proceed directly to:
 2. **Registration System:** Building `register.php` with all 4 clinic fields and RA 10173 privacy consent.
 3. **Registration OTP:** 6-digit cryptographic OTP generation (`random_int()`) with hashed database storage and 4-minute expiry.
 4. **CAPTCHA Protection:** Server-verified bot protection on registration.
+
