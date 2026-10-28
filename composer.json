@@ -1,0 +1,14 @@
+{
+    "name": "csu/clinic-appointment-system",
+    "description": "Secure Clinic Appointment and Monitoring System for IT 107 IAS 1 Final Project",
+    "type": "project",
+    "require": {
+        "php": ">=8.0",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist"
+    }
+}
+
