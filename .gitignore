@@ -1,0 +1,39 @@
+# =======================================================
+# IT 107 - Information Assurance and Security 1
+# Project: Secure Clinic Appointment and Monitoring System
+# .gitignore - Secret & Dependency Protection (Protection 11)
+# =======================================================
+
+# Configuration and Environment Secrets (NEVER commit real credentials)
+config.php
+config.local.php
+.env
+.env.*
+*.ini
+
+# Error Logs and Security Logging (Protection 10 & 11)
+logs/
+*.log
+
+# Third-Party Dependencies (Composer / Vendor)
+vendor/
+composer.phar
+
+# Cryptographic Keys and Certificates
+*.key
+*.pem
+*.cert
+*.crt
+
+# OS and Editor metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local Scratch and Temporary Files
+tmp/
+temp/
+scratch/
+
