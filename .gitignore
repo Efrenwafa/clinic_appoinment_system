@@ -36,4 +36,6 @@ desktop.ini
 tmp/
 temp/
 scratch/
+~$*
+*.tmp
 
