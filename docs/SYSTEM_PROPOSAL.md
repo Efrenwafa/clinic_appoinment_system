@@ -1,7 +1,20 @@
-# CARAGA STATE UNIVERSITY
-## College of Computing and Information Sciences
-### IT 107 – Information Assurance and Security 1
-### Final Laboratory Project · 1st Semester A.Y. 2026–2027
+# CARAGA STATE UNIVERSITY &middot; BS INFORMATION TECHNOLOGY
+## IT 107 &middot; Information Assurance and Security 1
+
+# Final Laboratory Project
+### Secure Registration, Authentication and Monitoring System
+**STUDENT HANDOUT &middot; 1st Semester A.Y. 2026&ndash;2027**
+
+---
+
+| Student Submission Details | |
+| :--- | :--- |
+| **Name** | Efren Castillano |
+| **Student No.** | |
+| **D1 / D2** | 9 / 1 |
+| **My System** | Secure Clinic Appointment and Monitoring System |
+| **Approved by** | |
+| **Date approved** | |
 
 ---
 
@@ -38,4 +51,3 @@
 | **Date** | &nbsp; |
 
 *(Note: Approval, signature, and date are left blank for the instructor at Checkpoint 1).*
-
