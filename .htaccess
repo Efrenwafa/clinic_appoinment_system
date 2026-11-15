@@ -1,0 +1,15 @@
+# Turn off directory indexing
+Options -Indexes
+ServerSignature Off
+
+# Protect configuration, environment, and database files
+<FilesMatch "^(config\.php|config\.sample\.php|\.env.*|composer\.(json|lock)|.*\.sql|.*\.log|.*\.md)$">
+    Require all denied
+</FilesMatch>
+
+# Security Headers (Protection 12)
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "DENY"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
