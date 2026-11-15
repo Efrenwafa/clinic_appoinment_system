@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT 107 - Complete System User & Demonstration Guide: Secure Clinic Appointment and Monitoring System</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --primary-dark: #154360;
+            --secondary: #2c3e50;
+            --accent: #27ae60;
+            --warning: #d35400;
+            --bg-light: #f8f9fa;
+            --border: #dcdcdc;
+            --text: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .header-banner {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .header-banner h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin: 0 0 6px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-banner h2 {
+            font-size: 16px;
+            color: var(--secondary);
+            font-weight: 600;
+            margin: 0 0 4px 0;
+        }
+
+        .header-banner p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .metadata-box {
+            background-color: var(--bg-light);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            border-radius: 4px;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px 20px;
+            font-size: 14px;
+        }
+
+        .metadata-item strong {
+            color: var(--primary-dark);
+            display: inline-block;
+            min-width: 140px;
+        }
+
+        h2.section-title {
+            color: var(--primary);
+            font-size: 19px;
+            border-bottom: 2px solid #eaeded;
+            padding-bottom: 8px;
+            margin-top: 36px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2.section-title span.badge {
+            background: var(--primary);
+            color: white;
+            font-size: 13px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-right: 10px;
+            font-weight: normal;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px 0;
+            font-size: 14px;
+        }
+
+        table th, table td {
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #ebf5fb;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+
+        .code-block {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 14px 18px;
+            border-radius: 6px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 14px 0;
+            line-height: 1.45;
+        }
+
+        .alert-box {
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin: 16px 0;
+            font-size: 14px;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background-color: #e8f4f8;
+            border-color: #2980b9;
+            color: #1a5276;
+        }
+
+        .alert-success {
+            background-color: #eafaf1;
+            border-color: #27ae60;
+            color: #196f3d;
+        }
+
+        .alert-warning {
+            background-color: #fef9e7;
+            border-color: #f39c12;
+            color: #7d6608;
+        }
+
+        .step-list {
+            padding-left: 20px;
+            margin: 12px 0;
+        }
+
+        .step-list li {
+            margin-bottom: 10px;
+            font-size: 14.5px;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .footer {
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+            padding-top: 16px;
+            text-align: center;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .container { box-shadow: none; padding: 20px; max-width: 100%; }
+            .code-block { background: #f0f0f0; color: #000; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-banner">
+        <h1>Caraga State University</h1>
+        <h2>Department of Information Technology · IT 107 (Information Assurance & Security 1)</h2>
+        <p>Final Laboratory Project: Comprehensive Step-by-Step User &amp; Defense Guide</p>
+    </div>
+
+    <div class="metadata-box">
+        <div class="metadata-grid">
+            <div class="metadata-item"><strong>System Title:</strong> Secure Clinic Appointment &amp; Monitoring System</div>
+            <div class="metadata-item"><strong>Student Name:</strong> Efren Castillano</div>
+            <div class="metadata-item"><strong>Student Email:</strong> efren.castillano@csucc.edu.ph</div>
+            <div class="metadata-item"><strong>GitHub Repo:</strong> Efrenwafa/clinic_appoinment_system</div>
+            <div class="metadata-item"><strong>Assigned Seed:</strong> D1 = 9 (2nd to last), D2 = 1 (last)</div>
+            <div class="metadata-item"><strong>Sensitive Field:</strong> Patient Contact Number (AES-256)</div>
+        </div>
+    </div>
+
+    <h2 class="section-title"><span class="badge">1</span> Quick Reference Demo Credentials</h2>
+    <p>The system is pre-seeded with 3 active test accounts configured with Gmail plus-addressing routing to your verified inbox for live OTP delivery:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Role</th>
+                <th>Username</th>
+                <th>Test Password</th>
+                <th>Registered Email</th>
+                <th>Encrypted Field (AES-256)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Clinic Admin</strong></td>
+                <td><code>admin_monitor</code></td>
+                <td><code>AdminPassword123!</code></td>
+                <td>efren.castillano@csucc.edu.ph</td>
+                <td>09123456789</td>
+            </tr>
+            <tr>
+                <td><strong>Patient (Juan)</strong></td>
+                <td><code>patient_juan</code></td>
+                <td><code>JuanPassword123!</code></td>
+                <td>efren.castillano+juan@csucc.edu.ph</td>
+                <td>09876543210</td>
+            </tr>
+            <tr>
+                <td><strong>Patient (Maria)</strong></td>
+                <td><code>patient_maria</code></td>
+                <td><code>MariaPassword123!</code></td>
+                <td>efren.castillano+maria@csucc.edu.ph</td>
+                <td>09234567891</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert-box alert-info">
+        <strong>Assigned Security Questions (Section 5):</strong><br>
+        • <strong>Q2 ("What was the name of your first elementary school?"):</strong> <code>bantay</code><br>
+        • <strong>Q5 ("What is the name of the street you grew up on?"):</strong> <code>rizal street</code><br>
+        • <strong>Q7 ("What was the make and model of your first car?"):</strong> <code>ampayon central elementary school</code>
+    </div>
+
+    <h2 class="section-title"><span class="badge">2</span> Pre-Flight System Startup</h2>
+    <ol class="step-list">
+        <li><span class="step-title">Start XAMPP Apache &amp; MySQL:</span> Open XAMPP Control Panel and start both modules. Ensure Apache (port 80) and MySQL (port 3306) are green.</li>
+        <li><span class="step-title">Navigate to the Portal:</span> Open your browser and go to: <br><code>http://localhost/clinic_appoinment_system/</code></li>
+    </ol>
+
+    <h2 class="section-title"><span class="badge">3</span> Step-by-Step Workflow Walkthrough</h2>
+
+    <h3>Scenario A: Patient Registration &amp; Email OTP Verification</h3>
+    <ol class="step-list">
+        <li>Navigate to <code>register.php</code>.</li>
+        <li>Complete the registration form using valid Title Case inputs. Note that age is calculated dynamically from birthdate.</li>
+        <li>Fill the 4 clinic fields: Contact Number (09XXXXXXXXX), Patient Type, Clinic Department, and Emergency Contact.</li>
+        <li>Answer the 3 assigned security questions (Q2, Q5, Q7), solve the image CAPTCHA, and check the RA 10173 consent box.</li>
+        <li>Submit the form: the server validates all inputs, hashes passwords/answers with Bcrypt, encrypts the contact number with AES-256, and dispatches a 6-digit OTP (valid for 4 minutes).</li>
+        <li>On <code>verify_otp.php</code>, enter the 6-digit OTP from your Gmail inbox. Upon verification, the account is activated.</li>
+    </ol>
+
+    <h3>Scenario B: Patient Login &amp; Appointment Booking</h3>
+    <ol class="step-list">
+        <li>Go to <code>login.php</code>, enter username <code>patient_juan</code>, password <code>JuanPassword123!</code>, and solve the CAPTCHA.</li>
+        <li>Enter the 6-digit Login OTP sent to your email. The system regenerates the session ID and redirects to <code>appointments.php</code>.</li>
+        <li><strong>Show Decrypted Phone:</strong> Demonstrate that the contact number <code>09876543210</code> is legibly decrypted at runtime, but stored as ciphertext in MySQL.</li>
+        <li><strong>Book Consultation:</strong> Select department, appointment date/time, enter reason, and submit. The appointment appears as <code>Pending</code>.</li>
+        <li><strong>Anti-IDOR Defense:</strong> Explain that appointments are isolated by <code>WHERE patient_id = :session_user_id</code>. Patients cannot access other records.</li>
+    </ol>
+
+    <h3>Scenario C: Demonstrating Progressive Lockout &amp; IP Protection</h3>
+    <ol class="step-list">
+        <li>Open an Incognito window to <code>login.php</code>.</li>
+        <li>Enter username <code>patient_juan</code> and intentionally enter an incorrect password 3 consecutive times.</li>
+        <li><strong>Failure 3 (Lockout Tier 1):</strong> The account locks for <strong>24 seconds</strong> ($15 + D_1 = 15 + 9$). A live countdown timer disables the submit button and registration link. A Security Lockout Alert email arrives in your inbox.</li>
+        <li>Show that refreshing the browser or clearing cookies cannot bypass the lockout, as the server enforces it in MySQL.</li>
+        <li>Explain Tier 2 (6 failures = 48s) and Tier 3 (9 failures = 96s), as well as IP-level blocking after 9 failures within 10 minutes.</li>
+    </ol>
+
+    <h3>Scenario D: Account Recovery &amp; Password History Prevention</h3>
+    <ol class="step-list">
+        <li>Click <strong>"Forgot Password?"</strong> on <code>login.php</code>, enter <code>patient_maria</code>, and solve the CAPTCHA.</li>
+        <li>Select <strong>Question 2</strong>, enter answer <code>bantay</code>, and submit to receive a Password Reset OTP.</li>
+        <li>Enter the OTP to access the token-protected <code>change_password.php?token=...</code> page.</li>
+        <li><strong>Test History Refusal:</strong> Attempt to set the password to Maria's old password: <code>MariaPassword123!</code>. The server blocks it with: <em>"You cannot reuse any of your last 3 passwords."</em></li>
+        <li>Enter a new strong password: <code>NewMariaSecret!2026</code>. The password updates, and a confirmation email is dispatched.</li>
+    </ol>
+
+    <h3>Scenario E: Administrator Security Monitoring Dashboard</h3>
+    <ol class="step-list">
+        <li>Log in as <code>admin_monitor</code> / <code>AdminPassword123!</code> and verify with Login OTP.</li>
+        <li>Access <code>admin_dashboard.php</code>.</li>
+        <li><strong>Show Summary Cards:</strong> Failed Logins Today, Active Lockouts, Active IP Blocks, Flagged Suspicious Events.</li>
+        <li><strong>Show 24-Hour Bar Chart:</strong> Hourly visualization of failed login attempts.</li>
+        <li><strong>Show Immutable Audit Logs (Protection S11):</strong> Point out that the dashboard has zero edit or delete buttons, ensuring forensic integrity.</li>
+    </ol>
+
+    <h2 class="section-title"><span class="badge">4</span> Command-Line Tools &amp; Verification</h2>
+
+    <h3>Run Automated Intrusion Detection CLI Script:</h3>
+    <div class="code-block">
+cd C:\xampp\htdocs\clinic_appoinment_system
+&amp; "C:\xampp\php\php.exe" scripts/monitor.php
+    </div>
+    <p>Scans for 4 patterns: rapid login failures (&ge;5 in 5 min), off-hours admin logins (10 PM – 6 AM), active IP blocks, and credential stuffing across multiple accounts.</p>
+
+    <h3>Run Automated 8-Point Security Self-Test Suite:</h3>
+    <div class="code-block">
+&amp; "C:\xampp\php\php.exe" tests/self_test.php
+    </div>
+    <p>Verifies AES-256 encryption, SQL injection resistance, XSS escaping, Section 4.10 error messages, password history, lockout timers, seed mathematical calculations, and log immutability. Outputs: <strong>8 Passed, 0 Failed</strong>.</p>
+
+    <div class="footer">
+        <p>&copy; 2026 Caraga State University · Department of Information Technology · IT 107 IAS 1 Final Project</p>
+    </div>
+</div>
+
+</body>
+</html>
