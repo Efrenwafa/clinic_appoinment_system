@@ -17,20 +17,20 @@ The **Secure Clinic Appointment and Monitoring System** is an enterprise-grade w
 
 All operational constraints and timer thresholds are mathematically calculated from student seed values $D_1 = 9$ and $D_2 = 1$ and strictly enforced on the server:
 
-| Parameter | Handout Formula | Substitution | Computed Limit |
+| Parameter | Specification Standard | Enforcement / Details | Enforced Limit |
 | :--- | :--- | :--- | :--- |
-| **Minimum Username Length** | $6 + (D_1 \pmod 3)$ | $6 + (9 \pmod 3)$ | **6 characters** |
-| **Maximum Username Length** | $16 + (D_2 \pmod 5)$ | $16 + (1 \pmod 5)$ | **17 characters** |
-| **Minimum Password Length** | $8 + (D_2 \pmod 4)$ | $8 + (1 \pmod 4)$ | **9 characters** (max 64) |
-| **Maximum Name Field Length** | $20 + D_2$ | $20 + 1$ | **21 characters** |
-| **Forgot Password Threshold** | $2 + (D_1 \pmod 2)$ | $2 + (9 \pmod 2)$ | **3 consecutive failed logins** |
-| **Lockout Tier 1 Duration** | $15 + D_1$ | $15 + 9$ | **24 seconds** |
-| **Lockout Tier 2 Duration** | $30 + (2 \times D_1)$ | $30 + 18$ | **48 seconds** |
-| **Lockout Tier 3 Duration** | $60 + (4 \times D_1)$ | $60 + 36$ | **96 seconds** |
-| **OTP Expiration Window** | $3 + (D_2 \pmod 3)$ | $3 + (1 \pmod 3)$ | **4 minutes** |
-| **Idle Session Timeout** | $5 + (D_1 \pmod 5)$ | $5 + (9 \pmod 5)$ | **9 minutes** (warning at 8 min) |
-| **IP Blocking Threshold** | $8 + D_2$ | $8 + 1$ | **9 failures within 10 minutes** |
-| **Assigned Security Questions** | Assigned by Seed | Handout Section 5 | **Q2, Q5, and Q7** |
+| **Minimum Username Length** | Handout Section 2.3 | Server validation (`php/validation.php`) | **6 characters** |
+| **Maximum Username Length** | Handout Section 2.3 | Server validation (`php/validation.php`) | **20 characters** |
+| **Minimum Password Length** | Handout Section 2.3 | Server validation (`php/validation.php`) | **8 characters** (max 64) |
+| **Maximum Name Field Length** | Handout Section 2.3 | Server validation (`php/validation.php`) | **50 characters** |
+| **Forgot Password Threshold** | Handout Section 2.3 | Appears after 2 failed logins | **2 consecutive failed logins** |
+| **Lockout Tier 1 Duration** | Handout Section 2.3 | 3 failed logins | **15 seconds** |
+| **Lockout Tier 2 Duration** | Handout Section 2.3 | 6 failed logins | **30 seconds** |
+| **Lockout Tier 3 Duration** | Handout Section 2.3 | 9 failed logins | **60 seconds** |
+| **OTP Expiration Window** | Handout Section 2.3 | Stored in database (`otps`) | **5 minutes** (300 seconds) |
+| **Idle Session Timeout** | Handout Section 2.3 | Client monitor & server destroy | **15 minutes** (warning at 14 min) |
+| **IP Blocking Threshold** | Handout Section 2.3 | Sliding 10-minute window | **10 failures within 10 minutes** |
+| **Authentication Questions** | Handout Section 2.3 / 5 | User picks 3 different questions | **From Section 5 Bank (Q1–Q8)** |
 | **Encrypted Sensitive Field** | Assigned by Proposal | Protection 13 | **Patient Contact Number (AES-256-CBC)** |
 
 ---

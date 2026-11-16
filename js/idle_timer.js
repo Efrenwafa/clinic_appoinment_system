@@ -1,12 +1,12 @@
 /**
  * Idle Session Timeout Manager (Handout Section 8.4)
  * IT 107 - Information Assurance and Security 1
- * Seeded idle timeout: 9 minutes (540 seconds). Warns 1 minute before (at 480 seconds).
+ * Universal idle timeout: 15 minutes (900 seconds). Warns 1 minute before (at 840 seconds).
  */
 
 (function () {
-    const IDLE_LIMIT_SEC = 9 * 60; // 540 seconds
-    const WARN_AT_SEC = 8 * 60;    // 480 seconds (1 minute before timeout)
+    const IDLE_LIMIT_SEC = 15 * 60; // 900 seconds
+    const WARN_AT_SEC = 14 * 60;    // 840 seconds (1 minute before timeout)
 
     let secondsIdle = 0;
     let warningActive = false;

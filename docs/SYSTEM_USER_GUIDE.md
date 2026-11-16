@@ -99,27 +99,29 @@ Allows new patients to create an account while strictly enforcing Section 4 & 5 
 1. Click **"Register"** in the top navigation or navigate to `register.php`.
 2. **Fill out the Core Registration Fields:**
    - **ID Number:** Format must be `YYYY-NNNN` (*e.g., `2026-9001`*). Duplicate IDs are rejected.
-   - **First Name:** Letters and spaces only, Title Case (*e.g., `Gabriel`*). Max $20 + D_2 = 21$ characters. Numbers, special characters, and ALL CAPS are blocked.
-   - **Middle Name:** Optional. If entered, Title Case is required (*e.g., `Cruz`*).
-   - **Family Name:** Required, Title Case (*e.g., `Mendoza`*). Max 21 characters.
+   - **First Name:** Letters and spaces only, Title Case (*e.g., `Gabriel`*). Max 50 characters (Universal limit). Numbers, special characters, and ALL CAPS are blocked.
+   - **Middle Name:** Optional. If entered, Title Case is required (*e.g., `Cruz`*). Max 50 characters.
+   - **Family Name:** Required, Title Case (*e.g., `Mendoza`*). Max 50 characters.
    - **Name Extension:** Optional dropdown (*`Jr.`, `Sr.`, `II`, `III`, `IV`*).
    - **Birthdate:** Select a date at least 18 years in the past.
    - **Age:** Automatically calculated by client-side JavaScript (`js/validate.js`) upon selecting birthdate and validated independently on the server.
    - **Address Fields:** Purok/Street, Barangay (*Title Case*), Municipality/City (*Title Case*), Province (*Title Case*), Country (*Title Case*).
    - **ZIP Code:** Exactly 4 numeric digits (*e.g., `8600`*).
    - **Email Address:** Valid email address (*e.g., `efren.castillano+demo@csucc.edu.ph`*).
-   - **Username:** Starts with a letter, alphanumeric only. Length must be between $6$ and $17$ characters based on seed ($6 + (9 \pmod 3) = 6$ and $16 + (1 \pmod 5) = 17$). Live availability check verifies uniqueness.
-   - **Password:** Minimum $8 + (1 \pmod 4) = 9$ characters. Live password strength visualizer (`js/strength.js`) checks uppercase, lowercase, number, and special character.
+   - **Username:** Starts with a letter, alphanumeric only. Length must be between 6 and 20 characters (Section 2.3 Universal setting). Live availability check verifies uniqueness.
+   - **Password:** Minimum 8 characters (Section 2.3). Live password strength visualizer (`js/strength.js`) checks uppercase, lowercase, number, and special character.
    - **Confirm Password:** Must match password exactly.
 3. **Fill out the 4 Clinic-Specific Registration Fields:**
    - **Contact Number (Required):** Exactly 11 digits starting with `09` (*e.g., `09171234567`*). Encrypted at rest using AES-256-CBC.
    - **Patient Type (Required Dropdown):** Choose `'New Patient'` or `'Returning Patient'`.
    - **Preferred Clinic Department (Required Dropdown):** Choose one configured specialty (*e.g., `General Medicine`, `Dental`, `Pediatrics`, `Dermatology`, `Cardiology`*).
    - **Emergency Contact Number (Optional):** If supplied, must be 11 digits starting with `09`.
-4. **Answer the 3 Assigned Security Questions (Section 5):**
-   - **Question 2:** Name of first elementary school (*e.g., `Ampayon Central School`*).
-   - **Question 5:** Street you grew up on (*e.g., `Rizal Street`*).
-   - **Question 7:** Make and model of first car (*e.g., `Toyota Tamaraw`*).
+4. **Select and Answer 3 Different Security Questions (Section 5 Question Bank):**
+   - The user selects **3 different questions** from the official bank (Q1–Q8):
+     - Question 1 (*e.g., Q2: "Who was your best friend in elementary school?"*)
+     - Question 2 (*e.g., Q5: "What street did you live on in Grade 1?"*)
+     - Question 3 (*e.g., Q7: "What was the name of your elementary school?"*)
+   - Type the answers (2–50 characters, letters and spaces only). Stored as one-way Bcrypt hashes.
 5. **Security Challenge & Consent:**
    - **GD Image CAPTCHA:** Type the characters displayed in the anti-bot CAPTCHA box.
    - **Privacy Notice Checkbox:** Review the notice and check *"I agree to the collection and processing of my personal health information in accordance with RA 10173"*.
@@ -142,7 +144,7 @@ Guarantees that an account cannot be logged into until the owner proves ownershi
 1. The browser lands on `verify_otp.php`.
 2. Notice the security indicators:
    - Purpose displayed: *"Email Verification for Registration"*.
-   - Timer countdown showing the **4-minute seed expiration window** ($3 + (1 \pmod 3) = 4\text{ minutes}$).
+   - Timer countdown showing the **5-minute expiration window** (Section 2.3).
    - Attempt counter showing *"Attempt 1 of 3"*.
 3. Open your Gmail inbox (`efren.castillano@csucc.edu.ph`).
 4. Open the email titled: **"Your Verification Code - Clinic Appointment System"**.
@@ -217,19 +219,19 @@ Provides self-service outpatient consultation booking, appointment tracking, and
 ## 8. Module 6: Idle Session Timeout & Auto-Logout
 
 ### Purpose
-Protects patient health information on unattended hospital or computer laboratory terminals by terminating inactive sessions after the seeded timeout window ($5 + (9 \pmod 5) = 9\text{ minutes}$).
+Protects patient health information on unattended hospital or computer laboratory terminals by terminating inactive sessions after the universal timeout window (**15 minutes**; warn at 14 minutes).
 
 ### Step-by-Step Walkthrough:
 1. Stay on any authenticated page (*e.g., `appointments.php` or `admin_dashboard.php`*).
 2. The client script `js/idle_timer.js` monitors user activity (mouse movement, keypresses, clicks, touches).
-3. **Warning Phase (At 8 minutes):**
-   - An accessible modal overlay pops up: *"Session Expiring Soon: You have been inactive for 8 minutes. You will be logged out in 60 seconds."*
+3. **Warning Phase (At 14 minutes):**
+   - An accessible modal overlay pops up: *"Session Expiring Soon: You have been inactive for 14 minutes. You will be logged out in 60 seconds."*
    - Two buttons are provided: **"Stay Logged In"** and **"Log Out Now"**.
    - If the user clicks "Stay Logged In", an asynchronous keep-alive ping is sent to `api_keep_alive.php`, resetting both the client timer and the PHP session timestamp.
-4. **Expiration Phase (At 9 minutes):**
+4. **Expiration Phase (At 15 minutes):**
    - If no interaction occurs, the browser is redirected to: `logout.php?reason=timeout`.
    - The PHP session is completely wiped (`session_unset()`, `session_destroy()`), and the session cookie is deleted with an expired timestamp.
-   - Browser lands on `login.php?timeout=1` displaying an informational notice: *"Your session expired due to 9 minutes of inactivity. Please log in again."*
+   - Browser lands on `login.php?timeout=1` displaying an informational notice: *"Your session expired due to 15 minutes of inactivity. Please log in again."*
 
 ---
 
@@ -240,7 +242,7 @@ Enables legitimate users to recover access without administrator intervention us
 
 ### Step-by-Step Walkthrough:
 1. Go to `login.php`.
-2. Click the **"Forgot Password?"** link (or trigger it after 3 failed login attempts).
+2. Click the **"Forgot Password?"** link (or trigger it after 2 failed login attempts).
 3. **Step 1: Identity Challenge:**
    - **Username:** `patient_maria`
    - **CAPTCHA:** Solve the image CAPTCHA.
@@ -277,7 +279,7 @@ Enables legitimate users to recover access without administrator intervention us
 ## 10. Module 8: Progressive Account Lockout & Rate Limiting
 
 ### Purpose
-Thwarts automated brute-force attacks and credential stuffing by enforcing escalating lockout tiers based on student seed $D_1 = 9$ and blocking abusive IP addresses.
+Thwarts automated brute-force attacks and credential stuffing by enforcing escalating lockout tiers (Section 2.3 Universal settings) and blocking abusive IP addresses.
 
 ### Step-by-Step Walkthrough:
 1. Open a new Incognito / Private browser window.
@@ -287,20 +289,19 @@ Thwarts automated brute-force attacks and credential stuffing by enforcing escal
 5. Solve the image CAPTCHA and click **"Sign In"**.
 6. Repeat this failure 3 consecutive times:
    - **Attempt 1:** Generic error: *"Invalid username or password."* (Failure count = 1).
-   - **Attempt 2:** Generic error: *"Invalid username or password."* (Failure count = 2).
-   - **Attempt 3:** **Lockout Tier 1 Activated!** ($15 + D_1 = 15 + 9 = \mathbf{24\text{ seconds}}$).
+   - **Attempt 2:** Generic error: *"Invalid username or password."* (Failure count = 2). Notice that the **"Forgot Password?"** link appears right after Attempt 2!
+   - **Attempt 3:** **Lockout Tier 1 Activated!** (**15 seconds** cooldown).
 7. **Show the Instructor What Happens on Failure 3:**
-   - A live countdown timer appears on screen: *"Account is locked. Please wait 24 seconds."*
+   - A live countdown timer appears on screen: *"Account is locked. Please wait 15 seconds."*
    - The **"Sign In"** button is disabled.
    - The **"Register"** navigation link is disabled during the lockout.
-   - The **"Forgot Password?"** link dynamically appears ($2 + (9 \pmod 2) = 3$).
    - Check your Gmail inbox: A **Lockout Security Alert Email** has arrived with the subject: *"Security Alert: Account Lockout - Clinic Appointment System"*.
    - Refresh the page: explain that refreshing cannot bypass the lockout because the server enforces `lockout_until` in MySQL.
 8. **Subsequent Lockout Tiers:**
-   - **Tier 2 (6 failures):** $30 + 2(D_1) = 30 + 18 = \mathbf{48\text{ seconds}}$ lockout and second alert email.
-   - **Tier 3 (9 failures):** $60 + 4(D_1) = 60 + 36 = \mathbf{96\text{ seconds}}$ lockout and third alert email.
+   - **Tier 2 (6 failures):** **30 seconds** lockout and second alert email.
+   - **Tier 3 (9 failures):** **60 seconds** lockout and third alert email.
 9. **IP-Level Blocking Defense:**
-   - If 9 failures occur from the same IP address within 10 minutes ($8 + D_2 = 8 + 1 = 9$), the server inserts an IP ban into `ip_blocks` for 10 minutes.
+   - If 10 failures occur from the same IP address within 10 minutes (Section 2.3), the server inserts an IP ban into `ip_blocks` for 10 minutes.
    - All subsequent requests from that IP address are blocked with:  
      *"Access temporarily blocked due to repeated security failures. Please contact the clinic administrator."*
 

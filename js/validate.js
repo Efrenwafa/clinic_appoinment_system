@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const statusSpan = document.getElementById('error-username');
             if (!statusSpan) return;
 
-            if (val.length < 6 || val.length > 17) {
-                statusSpan.textContent = 'Username must be between 6 and 17 characters.';
+            if (val.length < 6 || val.length > 20) {
+                statusSpan.textContent = 'Username must be between 6 and 20 characters.';
                 statusSpan.style.color = '#c0392b';
                 return;
             }

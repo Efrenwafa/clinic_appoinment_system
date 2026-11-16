@@ -14,6 +14,21 @@ if (basename($_SERVER['PHP_SELF']) === basename(__FILE__)) {
 require_once __DIR__ . '/db.php';
 
 /**
+ * Security Question Bank (Handout Section 5)
+ * All 8 official questions from the Section 5 question bank
+ */
+const SECURITY_QUESTION_BANK = [
+    'Q1' => 'What was the name of your first pet?',
+    'Q2' => 'Who was your best friend in elementary school?',
+    'Q3' => 'Who was your favorite teacher in high school?',
+    'Q4' => "What is your mother's maiden first name?",
+    'Q5' => 'What street did you live on in Grade 1?',
+    'Q6' => 'What was the first song you learned by heart?',
+    'Q7' => 'What was the name of your elementary school?',
+    'Q8' => 'What dish did you cook for the first time?'
+];
+
+/**
  * Validate a name field (First Name, Middle Name, Family Name, etc.)
  * Strictly enforces rules from Section 4.5 & 4.10:
  * 1. Letters and spaces only. No digits.
@@ -23,9 +38,9 @@ require_once __DIR__ . '/db.php';
  * 5. Not all capital letters.
  * 6. No three identical letters in a row (case-insensitive).
  * 7. First letter of each word capital, the rest small (Title Case).
- * 8. Length: 2 to 21 characters (20 + D2).
+ * 8. Length: 2 to 50 characters (Updated universal limit).
  */
-function validate_name_field(?string $value, string $fieldName, bool $isRequired = true, int $maxLen = 21): ?string {
+function validate_name_field(?string $value, string $fieldName, bool $isRequired = true, int $maxLen = 50): ?string {
     $val = trim($value ?? '');
 
     if ($val === '') {
@@ -228,10 +243,10 @@ function validate_username(?string $username, ?string $currentUserId = null): ?s
         return "Username must contain letters and numbers only.";
     }
 
-    // Seed limits: 6 to 17
+    // Universal limits: 6 to 20
     $len = strlen($v);
-    if ($len < 6 || $len > 17) {
-        return "Username must be between 6 and 17 characters.";
+    if ($len < 6 || $len > 20) {
+        return "Username must be between 6 and 20 characters.";
     }
 
     // Uniqueness
@@ -253,11 +268,11 @@ function validate_username(?string $username, ?string $currentUserId = null): ?s
 
 /**
  * Validate Password Strength (Section 4.9)
- * Seed minimum: 9 characters, maximum 64 characters. Weak cannot be submitted.
+ * Universal minimum: 8 characters, maximum 64 characters. Weak cannot be submitted.
  */
 function evaluate_password_strength(string $password): string {
     $len = strlen($password);
-    if ($len < 9) return 'Weak';
+    if ($len < 8) return 'Weak';
 
     $score = 0;
     if ($len >= 12) $score++;
@@ -275,7 +290,7 @@ function validate_password(?string $password, ?string $confirmPassword): ?string
     $conf = $confirmPassword ?? '';
 
     if ($pwd === '') return "Password is required.";
-    if (strlen($pwd) < 9) return "Password must be at least 9 characters.";
+    if (strlen($pwd) < 8) return "Password must be at least 8 characters.";
     if (strlen($pwd) > 64) return "Password cannot exceed 64 characters.";
 
     if (evaluate_password_strength($pwd) === 'Weak') {
@@ -336,4 +351,31 @@ function validate_security_answer(?string $val): ?string {
     if (strpos($v, '  ') !== false) return "Double space is not allowed.";
     if (!preg_match('/^[a-zA-Z\s]+$/', $v)) return "Answer must contain letters and spaces only.";
     return null;
+}
+
+/**
+ * Validate that the user picked 3 different questions from the Section 5 bank
+ */
+function validate_chosen_security_questions(array $chosenKeys, array $answers): array {
+    $errors = [];
+    if (count($chosenKeys) !== 3) {
+        $errors[] = "You must select exactly 3 security questions.";
+        return $errors;
+    }
+
+    if (count(array_unique($chosenKeys)) !== 3) {
+        $errors[] = "Please select three different security questions.";
+    }
+
+    foreach ($chosenKeys as $i => $qKey) {
+        if (!array_key_exists($qKey, SECURITY_QUESTION_BANK)) {
+            $errors[] = "Invalid security question selection for Question " . ($i + 1) . ".";
+        }
+        $ansErr = validate_security_answer($answers[$i] ?? '');
+        if ($ansErr !== null) {
+            $errors[] = "Question " . ($i + 1) . ": {$ansErr}";
+        }
+    }
+
+    return $errors;
 }

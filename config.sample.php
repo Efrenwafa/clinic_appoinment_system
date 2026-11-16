@@ -50,21 +50,19 @@ return [
         'aes_key' => 'BASE64_ENCODED_32_BYTE_KEY_PLACEHOLDER',
     ],
 
-    // System Seed Limits (D1 = 9, D2 = 1)
+    // Universal System Security Settings (Handout Section 2.3)
     'seed' => [
-        'd1' => 9,
-        'd2' => 1,
-        'min_username_len'       => 6,   // 6 + (9 mod 3)
-        'max_username_len'       => 17,  // 16 + (1 mod 5)
-        'min_password_len'       => 9,   // 8 + (1 mod 4)
-        'max_name_len'           => 21,  // 20 + 1
-        'forgot_pwd_threshold'   => 3,   // 2 + (9 mod 2)
-        'lockout_tier_1_sec'     => 24,  // 15 + 9
-        'lockout_tier_2_sec'     => 48,  // 30 + (2 * 9)
-        'lockout_tier_3_sec'     => 96,  // 60 + (4 * 9)
-        'otp_expiry_minutes'     => 4,   // 3 + (1 mod 3)
-        'idle_session_minutes'   => 9,   // 5 + (9 mod 5)
-        'ip_block_threshold'     => 9,   // 8 + 1 (within 10 minutes)
+        'min_username_len'       => 6,   // Min 6 characters
+        'max_username_len'       => 20,  // Max 20 characters
+        'min_password_len'       => 8,   // Min 8 characters
+        'max_name_len'           => 50,  // Max 50 characters
+        'forgot_pwd_threshold'   => 2,   // 2 failed logins before Forgot Password appears
+        'lockout_tier_1_sec'     => 15,  // Tier 1 (3 failures): 15 seconds
+        'lockout_tier_2_sec'     => 30,  // Tier 2 (6 failures): 30 seconds
+        'lockout_tier_3_sec'     => 60,  // Tier 3 (9 failures): 60 seconds
+        'otp_expiry_minutes'     => 5,   // OTP expiry: 5 minutes
+        'idle_session_minutes'   => 15,  // Idle session timeout: 15 minutes
+        'ip_block_threshold'     => 10,  // 10 failures in 10 minutes
     ]
 ];
 

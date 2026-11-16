@@ -23,7 +23,7 @@ The system enforces validation on both the client side (`js/validate.js`) for in
 | **ID Number** | Database uniqueness | Prepared `SELECT COUNT(*) FROM users` | `"This ID Number is already registered."` |
 | **First Name** | Required check | Cannot be empty or whitespace | `"First Name is required."` |
 | **First Name** | Minimum length | At least 2 characters | `"First Name must be at least 2 characters."` |
-| **First Name** | Maximum length | Cannot exceed $20 + D_2 = 21$ characters | `"First Name cannot exceed 21 characters."` |
+| **First Name** | Maximum length | Cannot exceed 50 characters (Universal limit) | `"First Name cannot exceed 50 characters."` |
 | **First Name** | No numeric digits | Reject characters `0-9` | `"Numbers are not allowed in First Name."` |
 | **First Name** | No special symbols | Letters and spaces only (`^[a-zA-Z\s]+$`) | `"Special characters are not allowed in First Name."` |
 | **First Name** | No double spaces | Cannot contain `'  '` | `"Double space is not allowed."` |
@@ -32,9 +32,9 @@ The system enforces validation on both the client side (`js/validate.js`) for in
 | **First Name** | Capitalization | First letter must be capital | `"First letter of your name must be capital."` |
 | **First Name** | Title Case | Rest of word must be lowercase | `"Only the first letter of each word should be capitalized."` |
 | **Middle Name** | Optional field | Allowed to be empty | `null` (valid if empty) |
-| **Middle Name** | Rules if provided | Same length (2-21), title case, no numbers/symbols | `"Middle Name must be at least 2 characters."` / `"Numbers are not allowed in Middle Name."` |
+| **Middle Name** | Rules if provided | Same length (2-50), title case, no numbers/symbols | `"Middle Name must be at least 2 characters."` / `"Numbers are not allowed in Middle Name."` |
 | **Family Name** | Required check | Cannot be empty or whitespace | `"Family Name is required."` |
-| **Family Name** | Constraints | Same rules as First Name, max 21 characters | Matches First Name error formats with `"Family Name"` label |
+| **Family Name** | Constraints | Same rules as First Name, max 50 characters | Matches First Name error formats with `"Family Name"` label |
 | **Name Extension**| Allowed values | Optional; if provided must match whitelist: `Jr.`, `Sr.`, `II`, `III`, `IV`, `V` | `"Select a valid name extension."` |
 | **Birthdate** | Required check | Cannot be empty | `"Birthdate is required."` |
 | **Birthdate** | Format validity | Must parse as `YYYY-MM-DD` | `"Invalid birthdate format."` |
@@ -61,16 +61,15 @@ The system enforces validation on both the client side (`js/validate.js`) for in
 | **Username** | Required check | Cannot be empty | `"Username is required."` |
 | **Username** | First character | Must begin with a letter `^[a-zA-Z]` | `"Username must start with a letter."` |
 | **Username** | Character set | Letters and numbers only (`^[a-zA-Z0-9]+$`) | `"Username must contain letters and numbers only."` |
-| **Username** | Seed length limit | Min $6 + (9 \pmod 3) = 6$, Max $16 + (1 \pmod 5) = 17$ | `"Username must be between 6 and 17 characters."` |
+| **Username** | Universal length | Min 6, Max 20 characters (Section 2.3) | `"Username must be between 6 and 20 characters."` |
 | **Username** | Database uniqueness | Prepared `SELECT COUNT(*) FROM users` | `"This username is already registered."` |
 | **Password** | Required check | Cannot be empty | `"Password is required."` |
-| **Password** | Seed length limit | Min $8 + (1 \pmod 4) = 9$ characters | `"Password must be at least 9 characters."` |
+| **Password** | Universal length | Min 8 characters, max 64 (Section 2.3) | `"Password must be at least 8 characters."` |
 | **Password** | Maximum length | Cannot exceed 64 characters | `"Password cannot exceed 64 characters."` |
 | **Password** | Strength check | Must score $\ge 1$ (Medium or Strong entropy) | `"Password is too weak. Must include a mix of uppercase, lowercase, numbers, or symbols."` |
 | **Confirm Pwd** | Match check | Must strictly equal `password` | `"Passwords do not match."` |
-| **Security Q2** | Answer format | Length 2-50 characters, letters and spaces only | `"Security answer is required."` / `"Answer must contain letters and spaces only."` |
-| **Security Q5** | Answer format | Length 2-50 characters, letters and spaces only | `"Security answer is required."` / `"Answer must contain letters and spaces only."` |
-| **Security Q7** | Answer format | Length 2-50 characters, letters and spaces only | `"Security answer is required."` / `"Answer must contain letters and spaces only."` |
+| **Security Questions** | Selection check | Must pick 3 different questions from bank | `"Please select three different security questions."` / `"You must select exactly 3 security questions."` |
+| **Security Answers** | Answer format | Length 2-50 characters, letters and spaces only | `"Security answer is required."` / `"Answer must contain letters and spaces only."` |
 
 ---
 
@@ -91,16 +90,16 @@ The system enforces validation on both the client side (`js/validate.js`) for in
 | :--- | :--- | :--- | :--- |
 | **Login Attempt** | Non-existent username OR wrong password | User enumeration (Attacker determining valid accounts) | `"Invalid username or password."` *(Generic, Section 4.10)* |
 | **Login Attempt** | Account lockout active | Brute-force credential guessing | `"Account is temporarily locked due to multiple failed login attempts. Please try again in X seconds."` |
-| **Login / Any Form** | IP block triggered ($9$ failures within 10 min) | Distributed automated dictionary attacks | `"Access temporarily blocked due to repeated security failures. Please contact the clinic administrator."` |
+| **Login / Any Form** | IP block triggered ($10$ failures within 10 min) | Distributed automated dictionary attacks | `"Access temporarily blocked due to repeated security failures. Please contact the clinic administrator."` |
 | **CAPTCHA Check** | Missing or incorrect CAPTCHA code | Automated submission bots / credential stuffers | `"Invalid CAPTCHA code. Please try again."` |
 | **CSRF Validation** | Missing or mismatched CSRF token | Cross-Site Request Forgery | `"Security validation failed. Please refresh the page and try again."` |
 | **OTP Submission** | Incorrect 6-digit OTP code | OTP guessing | `"Invalid verification code. You have X attempt(s) remaining."` |
 | **OTP Submission** | Max attempts ($3$) exceeded | OTP brute-force bypass | `"Maximum verification attempts exceeded. Please request a new code."` |
-| **OTP Submission** | Code past 4-minute seed expiry | Replay attacks using stale codes | `"Verification code has expired. Please request a new code."` |
+| **OTP Submission** | Code past 5-minute expiry | Replay attacks using stale codes | `"Verification code has expired. Please request a new code."` |
 | **OTP Resend** | Cooldown timer ($60$s) not elapsed | Mail server flooding / SMS spamming | `"Please wait X seconds before requesting another code."` |
 | **Password Reset** | Wrong security question answer | Unauthorized account takeover | `"The security answer provided is incorrect."` |
 | **Change Password** | Password reuse (last 3 passwords) | Stolen credential recycling | `"You cannot reuse any of your last 3 passwords. Please choose a different password."` |
 | **Direct URL Access** | Accessing `change_password.php` without token | Authorization bypass (Protection S5) | Redirect to `login.php` with session warning: `"Unauthorized access attempt."` |
 | **Access Control** | Patient navigating to `admin_dashboard.php` | Privilege escalation / unauthorized data viewing | HTTP 403 Forbidden: `"Access Denied: Administrator privilege required."` |
-| **Session State** | Inactive for $> 9$ minutes | Session hijacking on unattended workstation | Redirect to `login.php?timeout=1`: `"Your session has expired due to 9 minutes of inactivity. Please log in again."` |
+| **Session State** | Inactive for $> 15$ minutes | Session hijacking on unattended workstation | Redirect to `login.php?timeout=1`: `"Your session has expired due to 15 minutes of inactivity. Please log in again."` |
 | **Privacy Consent** | Consent checkbox unselected on registration | RA 10173 consent requirement | `"You must agree to the privacy notice and consent terms to register."` |

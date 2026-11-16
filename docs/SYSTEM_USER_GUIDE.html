@@ -219,7 +219,7 @@
             <div class="metadata-item"><strong>Student Name:</strong> Efren Castillano</div>
             <div class="metadata-item"><strong>Student Email:</strong> efren.castillano@csucc.edu.ph</div>
             <div class="metadata-item"><strong>GitHub Repo:</strong> Efrenwafa/clinic_appoinment_system</div>
-            <div class="metadata-item"><strong>Assigned Seed:</strong> D1 = 9 (2nd to last), D2 = 1 (last)</div>
+            <div class="metadata-item"><strong>Security Settings:</strong> Section 2.3 Universal Standards</div>
             <div class="metadata-item"><strong>Sensitive Field:</strong> Patient Contact Number (AES-256)</div>
         </div>
     </div>
@@ -262,10 +262,15 @@
     </table>
 
     <div class="alert-box alert-info">
-        <strong>Assigned Security Questions (Section 5):</strong><br>
-        • <strong>Q2 ("What was the name of your first elementary school?"):</strong> <code>bantay</code><br>
-        • <strong>Q5 ("What is the name of the street you grew up on?"):</strong> <code>rizal street</code><br>
-        • <strong>Q7 ("What was the make and model of your first car?"):</strong> <code>ampayon central elementary school</code>
+        <strong>Section 5 Official Authentication Question Bank (User picks 3 different questions):</strong><br>
+        • <strong>Q1:</strong> What was the name of your first pet?<br>
+        • <strong>Q2:</strong> Who was your best friend in elementary school? (Default Answer: <code>bantay</code>)<br>
+        • <strong>Q3:</strong> Who was your favorite teacher in high school?<br>
+        • <strong>Q4:</strong> What is your mother's maiden first name?<br>
+        • <strong>Q5:</strong> What street did you live on in Grade 1? (Default Answer: <code>rizal street</code>)<br>
+        • <strong>Q6:</strong> What was the first song you learned by heart?<br>
+        • <strong>Q7:</strong> What was the name of your elementary school? (Default Answer: <code>ampayon central elementary school</code>)<br>
+        • <strong>Q8:</strong> What dish did you cook for the first time?
     </div>
 
     <h2 class="section-title"><span class="badge">2</span> Pre-Flight System Startup</h2>
@@ -279,10 +284,10 @@
     <h3>Scenario A: Patient Registration &amp; Email OTP Verification</h3>
     <ol class="step-list">
         <li>Navigate to <code>register.php</code>.</li>
-        <li>Complete the registration form using valid Title Case inputs. Note that age is calculated dynamically from birthdate.</li>
+        <li>Complete the registration form using valid Title Case inputs. Max name length is 50 characters, and username is 6–20 characters. Note that age is calculated dynamically from birthdate.</li>
         <li>Fill the 4 clinic fields: Contact Number (09XXXXXXXXX), Patient Type, Clinic Department, and Emergency Contact.</li>
-        <li>Answer the 3 assigned security questions (Q2, Q5, Q7), solve the image CAPTCHA, and check the RA 10173 consent box.</li>
-        <li>Submit the form: the server validates all inputs, hashes passwords/answers with Bcrypt, encrypts the contact number with AES-256, and dispatches a 6-digit OTP (valid for 4 minutes).</li>
+        <li>Select <strong>3 different questions</strong> from the Section 5 bank, provide answers (2–50 characters), solve the image CAPTCHA, and check the RA 10173 consent box.</li>
+        <li>Submit the form: the server validates all inputs, hashes passwords/answers with Bcrypt, encrypts the contact number with AES-256, and dispatches a 6-digit OTP (valid for 5 minutes).</li>
         <li>On <code>verify_otp.php</code>, enter the 6-digit OTP from your Gmail inbox. Upon verification, the account is activated.</li>
     </ol>
 
@@ -299,9 +304,10 @@
     <ol class="step-list">
         <li>Open an Incognito window to <code>login.php</code>.</li>
         <li>Enter username <code>patient_juan</code> and intentionally enter an incorrect password 3 consecutive times.</li>
-        <li><strong>Failure 3 (Lockout Tier 1):</strong> The account locks for <strong>24 seconds</strong> ($15 + D_1 = 15 + 9$). A live countdown timer disables the submit button and registration link. A Security Lockout Alert email arrives in your inbox.</li>
+        <li>After 2 failed attempts, notice the <strong>"Forgot Password?"</strong> link appears.</li>
+        <li><strong>Failure 3 (Lockout Tier 1):</strong> The account locks for <strong>15 seconds</strong>. A live countdown timer disables the submit button and registration link. A Security Lockout Alert email arrives in your inbox.</li>
         <li>Show that refreshing the browser or clearing cookies cannot bypass the lockout, as the server enforces it in MySQL.</li>
-        <li>Explain Tier 2 (6 failures = 48s) and Tier 3 (9 failures = 96s), as well as IP-level blocking after 9 failures within 10 minutes.</li>
+        <li>Explain Tier 2 (6 failures = 30s) and Tier 3 (9 failures = 60s), as well as IP-level blocking after 10 failures within 10 minutes.</li>
     </ol>
 
     <h3>Scenario D: Account Recovery &amp; Password History Prevention</h3>

@@ -16,7 +16,7 @@ $pdo = get_db_connection();
 echo "=================================================================\n";
 echo "IT 107 IAS 1 Final Project: System Security Self-Test Suite\n";
 echo "System: Secure Clinic Appointment and Monitoring System\n";
-echo "Seed: D1 = 9, D2 = 1\n";
+echo "Configuration: Section 2.3 Universal Security Settings\n";
 echo "=================================================================\n\n";
 
 $passCount = 0;
@@ -100,17 +100,17 @@ assert_test("5. Password history refusal (last 3 passwords)",
     "Current password correctly blocked from reuse; new password allowed."
 );
 
-// TEST 6: Seeded Progressive Lockout Durations (D1 = 9)
+// TEST 6: Progressive Lockout Durations (Universal Settings: Section 2.3)
 $config = require dirname(__DIR__) . '/config.php';
 $t1 = $config['seed']['lockout_tier_1_sec'];
 $t2 = $config['seed']['lockout_tier_2_sec'];
 $t3 = $config['seed']['lockout_tier_3_sec'];
-assert_test("6. Seeded Lockout Durations (D1 = 9)",
-    $t1 === 24 && $t2 === 48 && $t3 === 96,
-    "Tier 1: 24s (15+9) | Tier 2: 48s (30+18) | Tier 3: 96s (60+36)"
+assert_test("6. Progressive Lockout Durations (Section 2.3)",
+    $t1 === 15 && $t2 === 30 && $t3 === 60,
+    "Tier 1: 15s | Tier 2: 30s | Tier 3: 60s"
 );
 
-// TEST 7: Seeded Limits & Timers (D1 = 9, D2 = 1)
+// TEST 7: Universal System Limits & Timers (Section 2.3)
 $minU = $config['seed']['min_username_len'];
 $maxU = $config['seed']['max_username_len'];
 $minP = $config['seed']['min_password_len'];
@@ -118,8 +118,8 @@ $maxN = $config['seed']['max_name_len'];
 $otpExp = $config['seed']['otp_expiry_minutes'];
 $idleExp = $config['seed']['idle_session_minutes'];
 $ipThresh = $config['seed']['ip_block_threshold'];
-assert_test("7. Seed Parameter Integrity (D1 = 9, D2 = 1)",
-    $minU === 6 && $maxU === 17 && $minP === 9 && $maxN === 21 && $otpExp === 4 && $idleExp === 9 && $ipThresh === 9,
+assert_test("7. Universal Security Settings Integrity (Section 2.3)",
+    $minU === 6 && $maxU === 20 && $minP === 8 && $maxN === 50 && $otpExp === 5 && $idleExp === 15 && $ipThresh === 10,
     "MinUser: {$minU} | MaxUser: {$maxU} | MinPwd: {$minP} | MaxName: {$maxN} | OTP: {$otpExp}m | Idle: {$idleExp}m | IP: {$ipThresh}"
 );
 

@@ -15,9 +15,9 @@ USE `clinic_appointment_db`;
 -- Contact number encrypted at rest with AES-256 (Protection 13).
 CREATE TABLE IF NOT EXISTS `users` (
     `id_number` VARCHAR(9) NOT NULL, -- Format: xxxx-xxxx (Primary Key)
-    `first_name` VARCHAR(21) NOT NULL, -- Seed limit: 20 + D2 = 21 chars
-    `middle_name` VARCHAR(21) NULL,
-    `family_name` VARCHAR(21) NOT NULL,
+    `first_name` VARCHAR(50) NOT NULL, -- Universal limit: max 50 chars (Section 2.3)
+    `middle_name` VARCHAR(50) NULL,
+    `family_name` VARCHAR(50) NOT NULL,
     `name_extension` VARCHAR(10) NULL, -- Jr., Sr., III, etc.
     `birthdate` DATE NOT NULL,
     `age` INT NOT NULL, -- Server recalculated (Must be >= 18)
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `country` VARCHAR(50) NOT NULL,
     `zip_code` VARCHAR(4) NOT NULL, -- Exactly 4 digits
     `email` VARCHAR(100) NOT NULL,
-    `username` VARCHAR(17) NOT NULL, -- Seed limits: 6 to 17 chars
+    `username` VARCHAR(20) NOT NULL, -- Universal limits: 6 to 20 chars (Section 2.3)
     `password_hash` VARCHAR(255) NOT NULL, -- Never stored plaintext (Protection 1, S1)
     `contact_number_encrypted` TEXT NOT NULL, -- Sensitive field encrypted with AES-256 (Protection 13)
     `patient_type` VARCHAR(25) NOT NULL, -- New Patient / Returning Patient

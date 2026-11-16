@@ -43,6 +43,12 @@ $values = [
     'patient_type' => '',
     'preferred_department' => '',
     'emergency_contact' => '',
+    'sel_q1' => 'Q2',
+    'sel_q2' => 'Q5',
+    'sel_q3' => 'Q7',
+    'ans_1' => '',
+    'ans_2' => '',
+    'ans_3' => '',
     'ans_q2' => '',
     'ans_q5' => '',
     'ans_q7' => '',
@@ -83,15 +89,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $err = validate_id_number($values['id_number']);
     if ($err) $errors['id_number'] = $err;
 
-    $err = validate_name_field($values['first_name'], 'First Name', true, 21);
+    $err = validate_name_field($values['first_name'], 'First Name', true, 50);
     if ($err) $errors['first_name'] = $err;
 
     if ($values['middle_name'] !== '') {
-        $err = validate_name_field($values['middle_name'], 'Middle Name', false, 21);
+        $err = validate_name_field($values['middle_name'], 'Middle Name', false, 50);
         if ($err) $errors['middle_name'] = $err;
     }
 
-    $err = validate_name_field($values['family_name'], 'Family Name', true, 21);
+    $err = validate_name_field($values['family_name'], 'Family Name', true, 50);
     if ($err) $errors['family_name'] = $err;
 
     // Name Extension (Jr., Sr., or Other)
@@ -157,15 +163,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($err) $errors['emergency_contact'] = $err;
     }
 
-    // 6. Validate Authentication Questions (Section 5)
-    $err = validate_security_answer($values['ans_q2']);
-    if ($err) $errors['ans_q2'] = $err;
+    // 6. Validate Authentication Questions (Section 5: User picks 3 different questions from bank)
+    if ($values['ans_1'] === '' && $values['ans_q2'] !== '') $values['ans_1'] = $values['ans_q2'];
+    if ($values['ans_2'] === '' && $values['ans_q5'] !== '') $values['ans_2'] = $values['ans_q5'];
+    if ($values['ans_3'] === '' && $values['ans_q7'] !== '') $values['ans_3'] = $values['ans_q7'];
 
-    $err = validate_security_answer($values['ans_q5']);
-    if ($err) $errors['ans_q5'] = $err;
-
-    $err = validate_security_answer($values['ans_q7']);
-    if ($err) $errors['ans_q7'] = $err;
+    $chosenKeys = [$values['sel_q1'], $values['sel_q2'], $values['sel_q3']];
+    $answersArr = [$values['ans_1'], $values['ans_2'], $values['ans_3']];
+    $qErrors = validate_chosen_security_questions($chosenKeys, $answersArr);
+    if (!empty($qErrors)) {
+        $errors['security_questions'] = implode('<br>', $qErrors);
+    }
 
     // 7. Privacy Consent Checkbox (Section 4.3 & 4.10)
     if (empty($values['privacy_consent'])) {
@@ -239,9 +247,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ");
 
             $questions = [
-                'Q2' => strtolower($values['ans_q2']),
-                'Q5' => strtolower($values['ans_q5']),
-                'Q7' => strtolower($values['ans_q7'])
+                $values['sel_q1'] => strtolower($values['ans_1']),
+                $values['sel_q2'] => strtolower($values['ans_2']),
+                $values['sel_q3'] => strtolower($values['ans_3'])
             ];
 
             foreach ($questions as $qKey => $cleanAns) {
@@ -520,29 +528,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- SECTION: SECURITY QUESTIONS (Section 5) -->
         <h3 style="color: var(--primary); font-size: 16px; margin: 24px 0 14px 0; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
-            5. Three Authentication Questions (Assigned: Q2, Q5, Q7)
+            5. Three Authentication Questions (Choose 3 different questions from the bank)
         </h3>
-        <p class="field-hint" style="margin-bottom: 14px;">Answers must be 2 to 50 characters, letters and spaces only. Stored as hashes.</p>
+        <p class="field-hint" style="margin-bottom: 14px;">Select 3 different questions from the bank. Answers must be 2 to 50 characters, letters and spaces only. Stored as one-way Bcrypt hashes.</p>
 
-        <div class="form-group">
-            <label for="ans_q2" class="form-label">Question A (Q2): "Who was your best friend in elementary school?"<span class="required-star">*</span></label>
-            <input type="text" id="ans_q2" name="ans_q2" class="form-control <?= isset($errors['ans_q2']) ? 'is-invalid' : '' ?>"
-                   maxlength="50" value="<?= e($values['ans_q2']) ?>" placeholder="Your answer" required>
-            <span id="error-ans_q2" class="field-error"><?= e($errors['ans_q2'] ?? '') ?></span>
+        <?php if (!empty($errors['security_questions'])): ?>
+            <div class="alert alert-danger" style="margin-bottom: 15px; font-size: 13.5px;">
+                <?= $errors['security_questions'] ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Question 1 -->
+        <div class="form-group" style="background: #fdfefe; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin-bottom: 14px;">
+            <label for="sel_q1" class="form-label" style="font-weight: 600;">Security Question 1<span class="required-star">*</span></label>
+            <select id="sel_q1" name="sel_q1" class="form-control" style="margin-bottom: 8px;" required>
+                <?php foreach (SECURITY_QUESTION_BANK as $qCode => $qText): ?>
+                    <option value="<?= $qCode ?>" <?= $values['sel_q1'] === $qCode ? 'selected' : '' ?>>
+                        <?= $qCode ?>: <?= e($qText) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <input type="text" id="ans_1" name="ans_1" class="form-control"
+                   maxlength="50" value="<?= e($values['ans_1'] !== '' ? $values['ans_1'] : $values['ans_q2']) ?>" placeholder="Answer to Question 1" required>
         </div>
 
-        <div class="form-group">
-            <label for="ans_q5" class="form-label">Question B (Q5): "What street did you live on in Grade 1?"<span class="required-star">*</span></label>
-            <input type="text" id="ans_q5" name="ans_q5" class="form-control <?= isset($errors['ans_q5']) ? 'is-invalid' : '' ?>"
-                   maxlength="50" value="<?= e($values['ans_q5']) ?>" placeholder="Your answer" required>
-            <span id="error-ans_q5" class="field-error"><?= e($errors['ans_q5'] ?? '') ?></span>
+        <!-- Question 2 -->
+        <div class="form-group" style="background: #fdfefe; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin-bottom: 14px;">
+            <label for="sel_q2" class="form-label" style="font-weight: 600;">Security Question 2<span class="required-star">*</span></label>
+            <select id="sel_q2" name="sel_q2" class="form-control" style="margin-bottom: 8px;" required>
+                <?php foreach (SECURITY_QUESTION_BANK as $qCode => $qText): ?>
+                    <option value="<?= $qCode ?>" <?= $values['sel_q2'] === $qCode ? 'selected' : '' ?>>
+                        <?= $qCode ?>: <?= e($qText) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <input type="text" id="ans_2" name="ans_2" class="form-control"
+                   maxlength="50" value="<?= e($values['ans_2'] !== '' ? $values['ans_2'] : $values['ans_q5']) ?>" placeholder="Answer to Question 2" required>
         </div>
 
-        <div class="form-group">
-            <label for="ans_q7" class="form-label">Question C (Q7): "What was the name of your elementary school?"<span class="required-star">*</span></label>
-            <input type="text" id="ans_q7" name="ans_q7" class="form-control <?= isset($errors['ans_q7']) ? 'is-invalid' : '' ?>"
-                   maxlength="50" value="<?= e($values['ans_q7']) ?>" placeholder="Your answer" required>
-            <span id="error-ans_q7" class="field-error"><?= e($errors['ans_q7'] ?? '') ?></span>
+        <!-- Question 3 -->
+        <div class="form-group" style="background: #fdfefe; border: 1px solid var(--border); border-radius: 6px; padding: 14px; margin-bottom: 14px;">
+            <label for="sel_q3" class="form-label" style="font-weight: 600;">Security Question 3<span class="required-star">*</span></label>
+            <select id="sel_q3" name="sel_q3" class="form-control" style="margin-bottom: 8px;" required>
+                <?php foreach (SECURITY_QUESTION_BANK as $qCode => $qText): ?>
+                    <option value="<?= $qCode ?>" <?= $values['sel_q3'] === $qCode ? 'selected' : '' ?>>
+                        <?= $qCode ?>: <?= e($qText) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <input type="text" id="ans_3" name="ans_3" class="form-control"
+                   maxlength="50" value="<?= e($values['ans_3'] !== '' ? $values['ans_3'] : $values['ans_q7']) ?>" placeholder="Answer to Question 3" required>
         </div>
 
         <!-- SECTION: PRIVACY NOTICE & CAPTCHA -->

@@ -29,7 +29,7 @@ $infoMessage = '';
 if (isset($_GET['msg']) && $_GET['msg'] === 'verified') {
     $infoMessage = 'Your account has been verified! You may now sign in.';
 } elseif (isset($_GET['msg']) && $_GET['msg'] === 'session_expired') {
-    $errorMessage = 'Your session expired due to 9 minutes of inactivity. Please sign in again.';
+    $errorMessage = 'Your session expired due to 15 minutes of inactivity. Please sign in again.';
 } elseif (isset($_GET['msg']) && $_GET['msg'] === 'logged_out') {
     $infoMessage = 'You have successfully signed out.';
 }

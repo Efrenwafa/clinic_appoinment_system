@@ -1,7 +1,7 @@
 /**
  * Live Password Strength Meter (Section 4.9)
  * IT 107 - Information Assurance and Security 1
- * Seed minimum: 9 characters. Weak passwords cannot be submitted.
+ * Universal minimum: 8 characters. Weak passwords cannot be submitted.
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!passwordInput || !strengthBar || !strengthText) return;
 
     function evaluateStrength(pwd) {
-        if (!pwd || pwd.length < 9) {
+        if (!pwd || pwd.length < 8) {
             return { label: 'Weak', class: 'weak' };
         }
 

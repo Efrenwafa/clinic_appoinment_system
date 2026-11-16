@@ -17,7 +17,7 @@ require_once __DIR__ . '/logger.php';
 require_once __DIR__ . '/mailer.php';
 
 /**
- * Protection 5: Check if client IP is blocked (9 failures in 10 minutes -> 10 minute block)
+ * Protection 5: Check if client IP is blocked (10 failures in 10 minutes -> 10 minute block)
  */
 function check_ip_status(): array {
     $pdo = get_db_connection();
@@ -52,7 +52,7 @@ function record_ip_failure(): void {
     $ip = get_client_ip();
     $now = date('Y-m-d H:i:s');
     $config = require dirname(__DIR__) . '/config.php';
-    $threshold = $config['seed']['ip_block_threshold'] ?? 9; // 8 + D2 = 9
+    $threshold = $config['seed']['ip_block_threshold'] ?? 10; // 10 failures in 10 minutes
 
     $stmt = $pdo->prepare("SELECT * FROM `ip_blocks` WHERE `ip_address` = :ip");
     $stmt->execute([':ip' => $ip]);
@@ -86,9 +86,9 @@ function record_ip_failure(): void {
 
 /**
  * Check User Account Lockout (Section 8.3)
- * Tier 1 (3 failures): 24 seconds
- * Tier 2 (6 failures): 48 seconds
- * Tier 3 (9 failures): 96 seconds
+ * Tier 1 (3 failures): 15 seconds
+ * Tier 2 (6 failures): 30 seconds
+ * Tier 3 (9 failures): 60 seconds
  */
 function check_account_lockout(array $user): array {
     $now = time();
@@ -104,7 +104,7 @@ function check_account_lockout(array $user): array {
     }
 
     $failedCount = (int)($user['failed_logins'] ?? 0);
-    $showForgotPassword = ($failedCount >= 3);
+    $showForgotPassword = ($failedCount >= 2); // Section 2.3: 2 failed logins before Forgot Password appears
 
     return [
         'is_locked'              => $isLocked,
@@ -127,9 +127,9 @@ function record_account_failure(string $userId): void {
     if (!$user) return;
 
     $config = require dirname(__DIR__) . '/config.php';
-    $t1Sec = $config['seed']['lockout_tier_1_sec'] ?? 24; // 24s
-    $t2Sec = $config['seed']['lockout_tier_2_sec'] ?? 48; // 48s
-    $t3Sec = $config['seed']['lockout_tier_3_sec'] ?? 96; // 96s
+    $t1Sec = $config['seed']['lockout_tier_1_sec'] ?? 15; // 15s
+    $t2Sec = $config['seed']['lockout_tier_2_sec'] ?? 30; // 30s
+    $t3Sec = $config['seed']['lockout_tier_3_sec'] ?? 60; // 60s
 
     $newFailCount = (int)$user['failed_logins'] + 1;
     $lockedUntil = null;
@@ -184,7 +184,7 @@ function reset_account_failures(string $userId): void {
 function create_otp_for_user(string $userId, string $email, string $recipientName, string $purpose): bool {
     $pdo = get_db_connection();
     $config = require dirname(__DIR__) . '/config.php';
-    $expiryMinutes = $config['seed']['otp_expiry_minutes'] ?? 4; // 4 minutes
+    $expiryMinutes = $config['seed']['otp_expiry_minutes'] ?? 5; // 5 minutes
 
     // Invalidate previous OTPs for this user and purpose (Handout 6.2: single use, requesting new cancels previous)
     $cancelStmt = $pdo->prepare("UPDATE `otps` SET `is_used` = 1 WHERE `user_id` = :uid AND `purpose` = :purpose AND `is_used` = 0");

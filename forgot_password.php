@@ -18,11 +18,7 @@ $errorMessage = '';
 $username = trim($_GET['u'] ?? ($_POST['username'] ?? ''));
 $userQuestions = [];
 
-$questionBank = [
-    'Q2' => 'Who was your best friend in elementary school?',
-    'Q5' => 'What street did you live on in Grade 1?',
-    'Q7' => 'What was the name of your elementary school?'
-];
+$questionBank = SECURITY_QUESTION_BANK;
 
 // If username was provided and validated in Step 1, or continuing to Step 2
 if ($username !== '') {
