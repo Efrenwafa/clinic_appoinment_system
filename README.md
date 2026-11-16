@@ -102,13 +102,15 @@ clinic_appoinment_system/
 │   └── self_test.php             # Automated 8-point security verification suite
 └── docs/
     ├── SYSTEM_PROPOSAL.md        # Official system proposal and clinic requirements
-    ├── SEED_TABLE.md             # Formal seed calculation and threshold table
+    ├── IT107_System_Proposal_and_Seed_Table_with_Cover.docx # Submission DOCX with CSU Cover
     ├── THREAT_MODEL.md           # Appendix B CIA threat mapping matrix
     ├── DESIGN_DECISIONS.md       # 10 "Your Call" architectural justifications
     ├── PRIVACY_NOTE.md           # RA 10173 compliance and data classification
     ├── ERROR_MESSAGE_MAPPING.md  # Complete rule-to-error string specification
     ├── DEVELOPMENT_JOURNAL.md    # 4-week development journal (Appendix C format)
-    └── TEST_ACCOUNTS.md          # Account credentials and live defense scripts
+    ├── SYSTEM_USER_GUIDE.md      # Master step-by-step user and live defense guide
+    ├── SYSTEM_USER_GUIDE.html    # Printable HTML user and demonstration guide
+    └── SYSTEM_USER_GUIDE.docx    # Microsoft Word version of user guide
 ```
 
 ---
@@ -214,7 +216,7 @@ This script scans for:
 | `patient_juan` | `JuanPassword123!` | Patient | Books appointments, checks consultation statuses on `appointments.php`. |
 | `patient_maria` | `MariaPassword123!` | Patient | Used for demonstrating Forgot Password, Security Questions (Q2/Q5/Q7), and OTP recovery. |
 
-*Detailed scenario-by-scenario presentation steps are provided in [`docs/TEST_ACCOUNTS.md`](docs/TEST_ACCOUNTS.md).*
+*Detailed scenario-by-scenario presentation steps are provided in [`docs/SYSTEM_USER_GUIDE.md`](docs/SYSTEM_USER_GUIDE.md).*
 
 ---
 
